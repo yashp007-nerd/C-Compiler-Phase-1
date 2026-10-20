@@ -1,37 +1,41 @@
-# Makefile — Micro-Compiler Phase 1 (Lexer)
-# ==========================================
+# Makefile — Micro-Compiler Phase 1 (Lexer — C++ Edition)
+# =========================================================
 # Targets:
-#   make          -> build the lexer demo (main.exe)
-#   make test     -> build & run the unit test suite
-#   make clean    -> remove all build artefacts
+#   make        -> build the lexer demo       (main_cpp.exe)
+#   make run    -> build & run the demo
+#   make test   -> build & run the unit tests (test_lexer.exe)
+#   make clean  -> remove build artefacts
 
-CC      = gcc
-CFLAGS  = -Wall -Wextra -Wpedantic -std=c11 -g
+CXX      = g++
+CXXFLAGS = -Wall -Wextra -Wpedantic -std=c++14 -g
 
-# ---- Demo executable ------------------------------------------------
-DEMO_SRCS = lexer.c main.c
-DEMO_BIN  = main.exe
+# ---- Demo ----------------------------------------------------------------
+DEMO_SRCS = Lexer.cpp main.cpp
+DEMO_BIN  = main_cpp.exe
 
-# ---- Test executable ------------------------------------------------
-TEST_SRCS = lexer.c test_lexer.c
+# ---- Tests ---------------------------------------------------------------
+TEST_SRCS = Lexer.cpp test_lexer.cpp
 TEST_BIN  = test_lexer.exe
 
-# ------------------------------------------------------------------ #
+# --------------------------------------------------------------------------
 
-.PHONY: all test clean
+.PHONY: all run test clean
 
 all: $(DEMO_BIN)
 
-$(DEMO_BIN): $(DEMO_SRCS) lexer.h
-	$(CC) $(CFLAGS) -o $@ $(DEMO_SRCS)
+$(DEMO_BIN): $(DEMO_SRCS) Lexer.hpp
+	$(CXX) $(CXXFLAGS) -o $@ $(DEMO_SRCS)
 
-$(TEST_BIN): $(TEST_SRCS) lexer.h
-	$(CC) $(CFLAGS) -o $@ $(TEST_SRCS)
+run: $(DEMO_BIN)
+	./$(DEMO_BIN)
+
+$(TEST_BIN): $(TEST_SRCS) Lexer.hpp
+	$(CXX) $(CXXFLAGS) -o $@ $(TEST_SRCS)
 
 test: $(TEST_BIN)
-	@echo ""
-	@echo "Running unit tests..."
-	@echo ""
+	@echo.
+	@echo Running unit tests...
+	@echo.
 	./$(TEST_BIN)
 
 clean:
